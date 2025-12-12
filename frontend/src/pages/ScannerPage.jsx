@@ -16,17 +16,22 @@ const ScannerPage = () => {
         let scanner = null;
 
         const initScanner = () => {
+             const qrBoxSize = window.innerWidth < 400 ? 200 : 250;
+
              scanner = new Html5QrcodeScanner(
                 "reader", 
                 { 
                     fps: 10,
-                    qrbox: { width: 250, height: 250 },
+                    qrbox: { width: qrBoxSize, height: qrBoxSize },
                     aspectRatio: 1.0,
                     showTorchButtonIfSupported: true,
-                    // rememberLastUsedCamera: true // Sometimes causes issues on mobile if permissions change
+                    videoConstraints: {
+                        facingMode: "environment"
+                    }
                 },
                 /* verbose= */ false
             );
+
             
             setScannerInstance(scanner);
 
@@ -164,7 +169,7 @@ const ScannerPage = () => {
                 ) : (
                     /* Scanner View */
                     <div className="overflow-hidden rounded-2xl">
-                        <div id="reader" className="w-full"></div>
+                        <div id="reader" className="w-full min-h-[300px] bg-black rounded-lg"></div>
                         <p className="text-center text-muted-foreground mt-6 text-sm">Position the QR code within the frame to scan</p>
                     </div>
                 )}
