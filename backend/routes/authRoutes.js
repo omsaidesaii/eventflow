@@ -1,0 +1,17 @@
+import express from "express";
+import { register,login,logout, sendVerifyOtp, verifyEmail, isAuthenticated, sendResetOtp, resetPassword } from "../controllers/authController.js";
+import userAuth from "../middlewares/userAuth.js";
+import upload from '../middlewares/multer.js';
+
+const authRouter = express.Router();
+
+authRouter.post("/register", upload.single('avatar'), register);
+authRouter.post("/login", login);
+authRouter.post("/logout", logout);
+authRouter.post("/send-verify-otp",sendVerifyOtp);
+authRouter.post("/verify-account",verifyEmail);
+authRouter.get("/is-auth",userAuth,isAuthenticated);
+authRouter.post("/send-reset-otp",sendResetOtp);
+authRouter.post("/reset-password",resetPassword);
+
+export default authRouter; 

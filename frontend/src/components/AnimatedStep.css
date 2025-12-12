@@ -1,0 +1,115 @@
+/* Animated Step Styles */
+.animated-step {
+  opacity: 0;
+  transform: translateY(25px);
+  transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+  transition-delay: var(--delay, 0ms);
+  text-align: center;
+  padding: 2rem;
+  background: hsl(var(--card) / 0.5);
+  backdrop-filter: blur(8px);
+  border: 1px solid hsl(var(--border));
+  border-radius: 1.5rem;
+  position: relative;
+  overflow: hidden;
+}
+
+/* Visible state */
+.animated-step.step-visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* Icon wrapper */
+.step-icon-wrapper {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 1.5rem;
+}
+
+.step-icon {
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, hsl(var(--primary) / 0.2), hsl(var(--primary) / 0.1));
+  border: 2px solid hsl(var(--primary) / 0.3);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: hsl(var(--primary));
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.animated-step:hover .step-icon {
+  transform: scale(1.1);
+  box-shadow: 0 0 30px hsl(var(--primary) / 0.3);
+}
+
+/* Title */
+.step-title {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: hsl(var(--foreground));
+  margin-bottom: 0.75rem;
+}
+
+/* Description */
+.step-description {
+  font-size: 0.95rem;
+  color: hsl(var(--muted-foreground));
+  line-height: 1.6;
+  max-width: 300px;
+  margin: 0 auto;
+}
+
+/* Hover effect */
+.animated-step {
+  transition: opacity 0.6s ease-out, transform 0.6s ease-out, border-color 0.3s ease;
+  transition-delay: var(--delay, 0ms);
+}
+
+.animated-step:hover {
+  border-color: hsl(var(--primary) / 0.5);
+}
+
+/* Reduced motion support */
+@media (prefers-reduced-motion: reduce) {
+  .animated-step {
+    opacity: 1;
+    transform: none;
+    transition: none;
+  }
+  
+  .step-icon {
+    transition: none;
+  }
+  
+  .animated-step:hover .step-icon {
+    transform: none;
+  }
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .animated-step {
+    padding: 1.5rem;
+  }
+  
+  .step-icon {
+    width: 64px;
+    height: 64px;
+  }
+  
+  .step-icon svg {
+    width: 24px;
+    height: 24px;
+  }
+  
+  .step-title {
+    font-size: 1.25rem;
+  }
+  
+  .step-description {
+    font-size: 0.875rem;
+  }
+}
