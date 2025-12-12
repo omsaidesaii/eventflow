@@ -108,6 +108,9 @@ const PaymentPage = () => {
                         if (verifyRes.data.success) {
                             toast.success("Booking Successful!");
                             navigate("/my-bookings");
+                        } else {
+                             toast.error(verifyRes.data.message || "Verification passed false");
+                             setProcessing(false);
                         }
                     } catch (err) {
                         toast.error("Payment verification failed");

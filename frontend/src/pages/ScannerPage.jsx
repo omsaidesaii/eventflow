@@ -11,49 +11,61 @@ const ScannerPage = () => {
     const [scannerInstance, setScannerInstance] = useState(null);
 
     useEffect(() => {
-        const timer = setTimeout(() => {
-            const scanner = new Html5QrcodeScanner(
+        // Use a local variable to capture the scanner instance for cleanup
+        // This avoids the closure stale state issue
+        let scanner = null;
+
+        const initScanner = () => {
+             scanner = new Html5QrcodeScanner(
                 "reader", 
                 { 
                     fps: 10,
                     qrbox: { width: 250, height: 250 },
                     aspectRatio: 1.0,
                     showTorchButtonIfSupported: true,
-                    rememberLastUsedCamera: true
+                    // rememberLastUsedCamera: true // Sometimes causes issues on mobile if permissions change
                 },
                 /* verbose= */ false
             );
-
+            
             setScannerInstance(scanner);
 
             const onScanSuccess = async (decodedText, decodedResult) => {
                 try {
                     const data = JSON.parse(decodedText);
                     
-                    try {
-                        scanner.pause(true); 
-                    } catch (pauseErr) {
-                         console.warn("Scanner pause failed (possibly file scan mode):", pauseErr);
+                    // Pause the scanner to prevent multiple triggers for the same code
+                    if (scanner) {
+                        try {
+                             scanner.pause(true); 
+                        } catch (e) { console.warn("Pause failed", e); }
                     }
 
                     await processCheckIn(data);
                 } catch (err) {
                     console.error("QR Parse Error", err);
+                    toast.error("Invalid QR Code format");
+                    // If parsing fails, resume scanning might be needed? 
+                    // Usually we just let it keep scanning until a valid one is found or user resets
                 }
             };
-
+            
             const onScanFailure = (error) => {
                 // console.warn(`Code scan error = ${error}`);
             };
 
             scanner.render(onScanSuccess, onScanFailure);
-        }, 100);
+        };
+
+        // Small delay to ensure DOM is ready
+        const timer = setTimeout(initScanner, 100);
 
         return () => {
             clearTimeout(timer);
-            if(scannerInstance) {
-                scannerInstance.clear().catch(error => {
-                    console.error("Failed to clear html5-qrcode scanner. ", error);
+            if(scanner) {
+                // Critical: clear() returns a promise. We strictly catch errors to prevent unmount crashes.
+                scanner.clear().catch(error => {
+                    console.warn("Failed to clear html5-qrcode scanner during unmount.", error);
                 });
             }
         };

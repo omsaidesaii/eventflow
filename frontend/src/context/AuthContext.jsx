@@ -50,6 +50,7 @@ export const AuthProvider = ({ children }) => {
         toast.success(data.message);
         return { success: true, email: data.email };
       }
+      return { success: false, message: data.message }; // Fallback if 200 OK but success false
     } catch (error) {
       toast.error(error.response?.data?.message || "Registration failed");
       return { success: false };
