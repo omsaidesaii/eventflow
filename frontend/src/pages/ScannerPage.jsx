@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { Html5QrcodeScanner } from "html5-qrcode";
+import { Html5Qrcode } from "html5-qrcode";
 import api from '../api/axios';
 import toast from 'react-hot-toast';
 import { useNavigate } from 'react-router-dom';
@@ -11,66 +11,50 @@ const ScannerPage = () => {
     const [scannerInstance, setScannerInstance] = useState(null);
 
     useEffect(() => {
-        // Use a local variable to capture the scanner instance for cleanup
-        // This avoids the closure stale state issue
-        let scanner = null;
+        const html5QrCode = new Html5Qrcode("reader");
+        let isStarted = false;
 
-        const initScanner = () => {
-             const qrBoxSize = window.innerWidth < 400 ? 200 : 250;
-
-             scanner = new Html5QrcodeScanner(
-                "reader", 
-                { 
-                    fps: 10,
-                    qrbox: { width: qrBoxSize, height: qrBoxSize },
-                    aspectRatio: 1.0,
-                    showTorchButtonIfSupported: true,
-                    videoConstraints: {
-                        facingMode: "environment"
-                    }
-                },
-                /* verbose= */ false
-            );
-
-            
-            setScannerInstance(scanner);
-
-            const onScanSuccess = async (decodedText, decodedResult) => {
-                try {
-                    const data = JSON.parse(decodedText);
-                    
-                    // Pause the scanner to prevent multiple triggers for the same code
-                    if (scanner) {
-                        try {
-                             scanner.pause(true); 
-                        } catch (e) { console.warn("Pause failed", e); }
-                    }
-
-                    await processCheckIn(data);
-                } catch (err) {
-                    console.error("QR Parse Error", err);
-                    toast.error("Invalid QR Code format");
-                    // If parsing fails, resume scanning might be needed? 
-                    // Usually we just let it keep scanning until a valid one is found or user resets
-                }
-            };
-            
-            const onScanFailure = (error) => {
-                // console.warn(`Code scan error = ${error}`);
-            };
-
-            scanner.render(onScanSuccess, onScanFailure);
+        const startScanner = async () => {
+             try {
+                 const qrBoxSize = window.innerWidth < 400 ? 200 : 250;
+                 
+                 await html5QrCode.start(
+                     { facingMode: "environment" }, 
+                     {
+                         fps: 10,
+                         qrbox: { width: qrBoxSize, height: qrBoxSize },
+                         aspectRatio: 1.0
+                     },
+                     (decodedText) => {
+                         // Success callback
+                         processCheckIn(JSON.parse(decodedText)).then(() => {
+                              // Optional: pause or stop? 
+                              // For now, let's just keep scanning or let processCheckIn handle logic
+                              html5QrCode.pause(true);
+                         });
+                     },
+                     (errorMessage) => {
+                         // parse error, ignore
+                     }
+                 );
+                 isStarted = true;
+                 setScannerInstance(html5QrCode);
+             } catch (err) {
+                 console.error("Error starting scanner", err);
+                 toast.error("Camera access failed. Check permissions.");
+             }
         };
 
-        // Small delay to ensure DOM is ready
-        const timer = setTimeout(initScanner, 100);
+        // Small delay to ensure DOM is mounted
+        const timer = setTimeout(startScanner, 100);
 
         return () => {
             clearTimeout(timer);
-            if(scanner) {
-                // Critical: clear() returns a promise. We strictly catch errors to prevent unmount crashes.
-                scanner.clear().catch(error => {
-                    console.warn("Failed to clear html5-qrcode scanner during unmount.", error);
+            if(isStarted) {
+                html5QrCode.stop().then(() => {
+                    html5QrCode.clear();
+                }).catch(err => {
+                    console.warn("Failed to stop scanner", err);
                 });
             }
         };
