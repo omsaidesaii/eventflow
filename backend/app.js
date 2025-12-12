@@ -11,6 +11,7 @@ import userRouter from './routes/userRoutes.js';
 import eventRouter from './routes/event.routes.js';
 import paymentRoutes from './routes/paymentRoutes.js';
 const app = express();
+app.set("trust proxy", 1); // Trust first proxy (Render load balancer)
 const port = process.env.PORT || 4000;
 
 connectDB();
