@@ -11,8 +11,11 @@ const ScannerPage = () => {
     const [scannerInstance, setScannerInstance] = useState(null);
 
     useEffect(() => {
+        if (scanResult) return;
+
         const html5QrCode = new Html5Qrcode("reader");
-        let isStarted = false;
+        let isScanning = false;
+        let isMounted = true;
 
         const startScanner = async () => {
              try {
@@ -26,39 +29,52 @@ const ScannerPage = () => {
                          aspectRatio: 1.0
                      },
                      (decodedText) => {
-                         // Success callback
-                         processCheckIn(JSON.parse(decodedText)).then(() => {
-                              // Optional: pause or stop? 
-                              // For now, let's just keep scanning or let processCheckIn handle logic
-                              html5QrCode.pause(true);
-                         });
+                         if (!isMounted || isScanning) return;
+                         isScanning = true;
+
+                         // Immediate pause to prevent multiple triggers
+                         html5QrCode.pause(true);
+                         
+                         try {
+                             const data = JSON.parse(decodedText);
+                             processCheckIn(data);
+                         } catch (e) {
+                             console.error("Parse error", e);
+                             toast.error("Invalid QR Format");
+                             // If it's just garbage text, resume?
+                             // But usually we just let it fail and sit paused or show error
+                             // For a better UX, maybe we should resume after 1s?
+                             // Let's just set scanning false and resume
+                             isScanning = false;
+                             html5QrCode.resume();
+                         }
                      },
                      (errorMessage) => {
                          // parse error, ignore
                      }
                  );
-                 isStarted = true;
-                 setScannerInstance(html5QrCode);
              } catch (err) {
-                 console.error("Error starting scanner", err);
-                 toast.error("Camera access failed. Check permissions.");
+                 if (isMounted) {
+                    console.error("Error starting scanner", err);
+                    // toast.error("Camera access failed.");
+                 }
              }
         };
 
-        // Small delay to ensure DOM is mounted
+        // Delay to allow layout to paint #reader div
         const timer = setTimeout(startScanner, 100);
 
         return () => {
+            isMounted = false;
             clearTimeout(timer);
-            if(isStarted) {
-                html5QrCode.stop().then(() => {
-                    html5QrCode.clear();
-                }).catch(err => {
-                    console.warn("Failed to stop scanner", err);
-                });
+            // Attempt to stop. If it's not running, this might throw, so we catch.
+            if (html5QrCode.isScanning) {
+                html5QrCode.stop().then(() => html5QrCode.clear()).catch(e => console.warn(e));
+            } else {
+                html5QrCode.clear().catch(e => console.warn(e));
             }
         };
-    }, []);
+    }, [scanResult]);
 
     const processCheckIn = async (data) => {
         try {
@@ -84,9 +100,6 @@ const ScannerPage = () => {
 
     const handleReset = () => {
         setScanResult(null);
-        if(scannerInstance) {
-            scannerInstance.resume();
-        }
     };
 
     return (
