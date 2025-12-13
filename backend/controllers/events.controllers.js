@@ -204,7 +204,7 @@ const getAllEventsByEventManagerId = async(req, res) => {
   
   try {
     const managerId = req.userId; 
-    const events = await Event.find({ organizerId: managerId });
+    const events = await Event.find({ organizerId: managerId }).sort({ createdAt: -1 });
 
     return res.status(200).json({
         success: true, data: events 

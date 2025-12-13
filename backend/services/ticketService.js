@@ -97,7 +97,8 @@ export const createTicketsForBooking = async (booking, attendees, userId, eventD
       await attendee.save();
 
       // Send email (log errors but don't break loop)
-      await sendTicketEmail({
+      // Send email (log errors but don't break loop)
+      sendTicketEmail({
         email: attendee.email,
         name: attendee.name,
         eventName: booking.eventName,
