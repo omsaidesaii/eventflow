@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import api from "../api/axios";
 import { Ticket, Calendar, QrCode, MapPin, ArrowLeft } from "lucide-react";
+import LoadingSpinner from "../components/LoadingSpinner";
 
 const MyBookings = () => {
     const navigate = useNavigate();
@@ -24,7 +25,7 @@ const MyBookings = () => {
         fetchBookings();
     }, []);
 
-    if(loading) return <div className="min-h-screen text-foreground flex items-center justify-center">Loading tickets...</div>;
+    if(loading) return <LoadingSpinner />;
 
     return (
         <div className="min-h-screen py-16 px-4 max-w-6xl mx-auto bg-gradient-to-b from-background via-primary/5 to-background">

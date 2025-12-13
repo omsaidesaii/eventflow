@@ -3,6 +3,7 @@ import api from "../api/axios";
 import { useParams, Link } from "react-router-dom";
 import { Download, TrendingUp, Users, DollarSign, ArrowLeft } from "lucide-react";
 import toast from "react-hot-toast";
+import LoadingSpinner from "../components/LoadingSpinner";
 
 const EventStats = () => {
     const { id } = useParams();
@@ -48,7 +49,7 @@ const EventStats = () => {
         }
     }
 
-    if(loading) return <div className="min-h-screen flex items-center justify-center text-foreground">Loading Stats...</div>;
+    if(loading) return <LoadingSpinner />;
 
     return (
         <div className="min-h-screen py-16 px-4 max-w-7xl mx-auto bg-gradient-to-b from-background via-primary/5 to-background">

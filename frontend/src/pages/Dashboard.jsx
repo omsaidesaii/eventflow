@@ -3,6 +3,7 @@ import api from "../api/axios";
 import { Link, useNavigate } from "react-router-dom";
 import { Plus, Edit, Trash2, Users, Download, Eye, Scan, Calendar, MapPin } from "lucide-react";
 import toast from "react-hot-toast";
+import LoadingSpinner from "../components/LoadingSpinner";
 
 const Dashboard = () => {
     const [events, setEvents] = useState([]);
@@ -54,7 +55,7 @@ const Dashboard = () => {
         }
     }
 
-    if(loading) return <div className="min-h-screen flex items-center justify-center text-foreground">Loading Dashboard...</div>;
+    if(loading) return <LoadingSpinner />;
 
     return (
         <div className="min-h-screen py-16 px-4 max-w-7xl mx-auto bg-gradient-to-b from-background via-primary/5 to-background">

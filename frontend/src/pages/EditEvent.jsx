@@ -3,6 +3,7 @@ import api from "../api/axios";
 import { useNavigate, useParams, Link } from "react-router-dom";
 import { Loader2, Plus, Trash, ArrowLeft } from "lucide-react";
 import toast from "react-hot-toast";
+import LoadingSpinner from "../components/LoadingSpinner";
 
 const EditEvent = () => {
     const { id } = useParams();
@@ -129,7 +130,7 @@ const EditEvent = () => {
         }
     };
 
-    if(fetching) return <div className="min-h-screen flex items-center justify-center text-white">Loading...</div>;
+    if(fetching) return <LoadingSpinner />;
 
     return (
         <div className="min-h-screen py-10 px-4 max-w-4xl mx-auto">

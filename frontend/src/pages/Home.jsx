@@ -20,6 +20,7 @@ import {
 } from "lucide-react";
 import heroBg from "../assets/hero-bg.png";
 import Squares from "../components/Squares";
+import LoadingSpinner from "../components/LoadingSpinner";
 
 const Home = () => {
   const [events, setEvents] = useState([]);
@@ -154,9 +155,7 @@ const Home = () => {
             </div>
 
             {loading ? (
-                <div className="flex justify-center py-20">
-                    <Loader className="animate-spin text-primary" size={40} />
-                </div>
+                <LoadingSpinner fullScreen={false} />
             ) : events.length === 0 ? (
                 <div className="text-center text-muted-foreground py-20 bg-muted/30 rounded-3xl border border-border border-dashed">
                     <Ticket size={48} className="mx-auto mb-4 opacity-50"/>

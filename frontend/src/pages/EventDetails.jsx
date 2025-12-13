@@ -4,6 +4,7 @@ import api from "../api/axios";
 import { useAuth } from "../context/AuthContext";
 import { Calendar, MapPin, Share2, Clock, Ticket as TicketIcon, ArrowLeft } from "lucide-react";
 import toast from "react-hot-toast";
+import LoadingSpinner from "../components/LoadingSpinner";
 
 const EventDetails = () => {
     const { id } = useParams();
@@ -73,7 +74,7 @@ const EventDetails = () => {
         });
     };
 
-    if (loading) return <div className="min-h-screen flex items-center justify-center text-foreground">Loading...</div>;
+    if (loading) return <LoadingSpinner />;
     if (!event) return null;
 
     return (

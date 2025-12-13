@@ -3,6 +3,7 @@ import api from "../api/axios";
 import { Link } from "react-router-dom";
 import { Calendar, MapPin, Search, ArrowRight, Loader, Ticket } from "lucide-react";
 import PixelCard from "../components/PixelCard";
+import LoadingSpinner from "../components/LoadingSpinner";
 
 const Events = () => {
     const [events, setEvents] = useState([]);
@@ -92,9 +93,7 @@ const Events = () => {
 
             {/* Event Grid */}
             {loading ? (
-                <div className="flex justify-center py-20">
-                     <Loader className="animate-spin text-primary" size={40} />
-                </div>
+                <LoadingSpinner fullScreen={false} />
             ) : filteredEvents.length === 0 ? (
                 <div className="text-center py-20 bg-muted/30 rounded-3xl border border-border border-dashed">
                     <Ticket size={48} className="mx-auto mb-4 opacity-50 text-muted-foreground"/>

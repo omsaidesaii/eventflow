@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import api from "../api/axios";
 import { useAuth } from "../context/AuthContext";
 import { User, Phone, Upload, Loader2, Camera, Mail, Shield, ArrowLeft } from "lucide-react";
+import LoadingSpinner from "../components/LoadingSpinner";
 
 const Profile = () => {
     const navigate = useNavigate();
@@ -49,7 +50,7 @@ const Profile = () => {
     };
 
     if (authLoading || !user) {
-        return <div className="min-h-screen flex items-center justify-center text-foreground">Loading Profile...</div>;
+        return <LoadingSpinner />;
     }
 
     return (
