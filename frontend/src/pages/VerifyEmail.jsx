@@ -56,6 +56,8 @@ const VerifyEmail = () => {
             <h2 className="text-4xl font-bold text-foreground mb-2 text-center">Verify Account</h2>
             <p className="text-muted-foreground text-center mb-8 text-sm">
                 We sent a code to <span className="text-primary font-medium">{email}</span>
+                <br />
+                <span className="text-sm text-red-800 font-bold block mt-2">Important: Check your spam folder if you don't see it</span>
             </p>
 
             <form onSubmit={handleSubmit} className="space-y-5">

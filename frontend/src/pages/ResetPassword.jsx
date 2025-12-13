@@ -44,7 +44,11 @@ const ResetPassword = () => {
                     </div>
 
                     <h2 className="text-4xl font-bold text-foreground mb-2 text-center">Reset Password</h2>
-                    <p className="text-muted-foreground text-center mb-8 text-sm">Enter the OTP sent to your email</p>
+                    <p className="text-muted-foreground text-center mb-8 text-sm">
+                        Enter the OTP sent to your email
+                        <br />
+                        <span className="text-sm text-red-800 font-bold block mt-2">Important: Check your spam folder if you don't see it</span>
+                    </p>
 
                     <form onSubmit={handleSubmit} className="space-y-5">
                         <div>
