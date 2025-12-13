@@ -79,7 +79,7 @@ export const register = async (req, res) => {
       subject: "🔐 Verify Your Account - Security Code Inside",
       html: getVerificationEmailTemplate(otp),
     };
-    await transporter.sendMail(mailOptions);
+    transporter.sendMail(mailOptions).catch((err) => console.log("Verification Email Failed: ", err));
 
     return res.status(201).json({
       success: true,
@@ -249,7 +249,7 @@ export const verifyEmail = async (req, res) => {
         subject: "🎉 Welcome to EventFlow!",
         html: getWelcomeEmailTemplate(user.name, email),
       };
-      await transporter.sendMail(mailOptions);
+      transporter.sendMail(mailOptions).catch(err => console.log("Welcome Email Failed: ", err));
 
     return res
       .status(200)
