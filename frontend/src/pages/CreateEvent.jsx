@@ -1,7 +1,7 @@
 import { useState } from "react";
 import api from "../api/axios";
-import { useNavigate } from "react-router-dom";
-import { Loader2, Plus, Trash } from "lucide-react";
+import { useNavigate, Link } from "react-router-dom";
+import { Loader2, Plus, Trash, ArrowLeft } from "lucide-react";
 import toast from "react-hot-toast";
 
 const CreateEvent = () => {
@@ -95,6 +95,9 @@ const CreateEvent = () => {
 
     return (
         <div className="min-h-screen py-16 px-4 max-w-4xl mx-auto bg-gradient-to-b from-background via-primary/5 to-background">
+            <Link to="/dashboard" className="flex items-center text-muted-foreground hover:text-foreground transition mb-6 text-sm gap-2 w-fit">
+                <ArrowLeft size={16} /> Back to Dashboard
+            </Link>
             <div className="mb-12">
                 <h1 className="text-5xl font-bold text-foreground mb-2">Create New Event</h1>
                 <p className="text-muted-foreground">Fill in the details to create your event</p>

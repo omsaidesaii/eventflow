@@ -1,8 +1,10 @@
 import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import api from "../api/axios";
-import { Ticket, Calendar, QrCode, MapPin } from "lucide-react";
+import { Ticket, Calendar, QrCode, MapPin, ArrowLeft } from "lucide-react";
 
 const MyBookings = () => {
+    const navigate = useNavigate();
     const [bookings, setBookings] = useState([]);
     const [loading, setLoading] = useState(true);
 
@@ -27,6 +29,11 @@ const MyBookings = () => {
     return (
         <div className="min-h-screen py-16 px-4 max-w-6xl mx-auto bg-gradient-to-b from-background via-primary/5 to-background">
             <div className="text-center mb-12">
+                <div className="flex justify-start mb-4 max-w-6xl mx-auto">
+                    <button onClick={() => navigate(-1)} className="flex items-center text-muted-foreground hover:text-foreground transition text-sm gap-2">
+                        <ArrowLeft size={16} /> Back
+                    </button>
+                </div>
                 <h1 className="text-5xl font-bold text-foreground mb-4">My Tickets</h1>
                 <p className="text-muted-foreground text-lg">View and manage your event bookings</p>
             </div>

@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import api from "../api/axios";
 import { useAuth } from "../context/AuthContext";
-import { Calendar, MapPin, Share2, Clock, Ticket as TicketIcon } from "lucide-react";
+import { Calendar, MapPin, Share2, Clock, Ticket as TicketIcon, ArrowLeft } from "lucide-react";
 import toast from "react-hot-toast";
 
 const EventDetails = () => {
@@ -86,6 +86,12 @@ const EventDetails = () => {
                      <div className="w-full h-full bg-neutral-900" />
                  )}
                  <div className="absolute inset-0 bg-gradient-to-t from-black via-black/50 to-transparent"></div>
+                <button 
+                    onClick={() => navigate("/events")} 
+                    className="absolute top-6 left-4 md:left-8 z-20 bg-black/30 hover:bg-black/50 backdrop-blur-md text-white px-4 py-2 rounded-full flex items-center gap-2 transition-all border border-white/10 text-sm font-medium"
+                >
+                    <ArrowLeft size={16} /> Back to Events
+                </button>
                 <div className="absolute bottom-0 left-0 w-full p-8 max-w-7xl mx-auto">
                     <span className="bg-white/90 backdrop-blur-md text-black px-4 py-1.5 rounded-full text-xs font-bold mb-4 inline-block uppercase tracking-wider">{event.category}</span>
                     <h1 className="text-4xl md:text-6xl font-bold text-white mb-2">{event.title}</h1>

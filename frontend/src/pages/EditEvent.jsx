@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import api from "../api/axios";
-import { useNavigate, useParams } from "react-router-dom";
-import { Loader2, Plus, Trash } from "lucide-react";
+import { useNavigate, useParams, Link } from "react-router-dom";
+import { Loader2, Plus, Trash, ArrowLeft } from "lucide-react";
 import toast from "react-hot-toast";
 
 const EditEvent = () => {
@@ -133,6 +133,9 @@ const EditEvent = () => {
 
     return (
         <div className="min-h-screen py-10 px-4 max-w-4xl mx-auto">
+            <Link to="/dashboard" className="flex items-center text-muted-foreground hover:text-foreground transition mb-6 text-sm gap-2 w-fit">
+                <ArrowLeft size={16} /> Back to Dashboard
+            </Link>
             <h1 className="text-3xl font-bold text-foreground mb-8">Edit Event</h1>
 
             <form onSubmit={handleSubmit} className="space-y-8 bg-card p-8 rounded-2xl border border-border">

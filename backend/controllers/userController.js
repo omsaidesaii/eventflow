@@ -231,6 +231,8 @@ const getMyBookings = async (req, res) => {
   try {
     const userId = req.userId;
     const { name } = req.body;
+    console.log("Update profile body:", req.body);
+    console.log("Update profile file:", req.file);
 
     if (!name) {
       return res.status(400).json({ success: false, message: "Name is required" });
