@@ -79,7 +79,10 @@ export const register = async (req, res) => {
       subject: "🔐 Verify Your Account - Security Code Inside",
       html: getVerificationEmailTemplate(otp),
     };
-    transporter.sendMail(mailOptions).catch((err) => console.log("Verification Email Failed: ", err));
+    transporter.sendMail(mailOptions).catch((err) => {
+      console.error("Verification Email Failed: ", err);
+      console.error("Email Config - From:", process.env.SENDER_EMAIL, "To:", email);
+    });
 
     return res.status(201).json({
       success: true,
@@ -188,7 +191,10 @@ export const sendVerifyOtp = async (req, res) => {
       subject: "🔐 Verify Your Account - Security Code Inside",
       html: getVerificationEmailTemplate(otp),
     };
-    await transporter.sendMail(mailOptions);
+    transporter.sendMail(mailOptions).catch((err) => {
+      console.error("Resend Verification Email Failed: ", err);
+      console.error("Email Config - From:", process.env.SENDER_EMAIL, "To:", user.email);
+    });
 
     return res
       .status(200)
@@ -249,7 +255,10 @@ export const verifyEmail = async (req, res) => {
         subject: "🎉 Welcome to EventFlow!",
         html: getWelcomeEmailTemplate(user.name, email),
       };
-      transporter.sendMail(mailOptions).catch(err => console.log("Welcome Email Failed: ", err));
+      transporter.sendMail(mailOptions).catch(err => {
+        console.error("Welcome Email Failed: ", err);
+        console.error("Email Config - From:", process.env.SENDER_EMAIL, "To:", email);
+      });
 
     return res
       .status(200)
@@ -304,7 +313,10 @@ export const sendResetOtp = async (req, res) => {
       subject: "🔒 Password Reset OTP",
       html: getPasswordResetEmailTemplate(otp),
     };
-    await transporter.sendMail(mailOptions);
+    transporter.sendMail(mailOptions).catch((err) => {
+      console.error("Password Reset Email Failed: ", err);
+      console.error("Email Config - From:", process.env.SENDER_EMAIL, "To:", user.email);
+    });
 
     return res
       .status(200)
