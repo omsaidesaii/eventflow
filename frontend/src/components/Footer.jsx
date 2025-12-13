@@ -1,4 +1,4 @@
-import { Twitter, Instagram, Linkedin, Github } from "lucide-react";
+import { Twitter, Instagram, Linkedin, Github, LinkedinIcon } from "lucide-react";
 
 const Footer = () => {
     return (
@@ -14,13 +14,13 @@ const Footer = () => {
                             A student project for discovering and hosting events. Built with passion to create memorable experiences.
                         </p>
                         <div className="flex gap-3 pt-2">
-                            <a href="#" className="w-9 h-9 rounded-full bg-secondary/50 border border-border flex items-center justify-center hover:bg-secondary hover:border-primary/50 transition-all">
+                            <a href="https://x.com/omsaidesai" className="w-9 h-9 rounded-full bg-secondary/50 border border-border flex items-center justify-center hover:bg-secondary hover:border-primary/50 transition-all">
                                 <Twitter size={16} />
                             </a>
-                            <a href="#" className="w-9 h-9 rounded-full bg-secondary/50 border border-border flex items-center justify-center hover:bg-secondary hover:border-primary/50 transition-all">
-                                <Instagram size={16} />
+                            <a href="https://www.linkedin.com/in/omsai-desai" className="w-9 h-9 rounded-full bg-secondary/50 border border-border flex items-center justify-center hover:bg-secondary hover:border-primary/50 transition-all">
+                                <LinkedinIcon size={16} />
                             </a>
-                            <a href="#" className="w-9 h-9 rounded-full bg-secondary/50 border border-border flex items-center justify-center hover:bg-secondary hover:border-primary/50 transition-all">
+                            <a href="https://github.com/omsaidesaii" className="w-9 h-9 rounded-full bg-secondary/50 border border-border flex items-center justify-center hover:bg-secondary hover:border-primary/50 transition-all">
                                 <Github size={16} />
                             </a>
                         </div>
@@ -30,17 +30,17 @@ const Footer = () => {
                     <div className="md:col-span-3">
                         <h4 className="font-semibold text-sm text-foreground mb-4 uppercase tracking-wider">Quick Links</h4>
                         <ul className="space-y-3 text-muted-foreground text-sm">
-                            <li><a href="#" className="hover:text-foreground transition-colors">Browse Events</a></li>
-                            <li><a href="#" className="hover:text-foreground transition-colors">Create Event</a></li>
-                            <li><a href="#" className="hover:text-foreground transition-colors">About</a></li>
+                            <li><a href="/events" className="hover:text-foreground transition-colors">Browse Events</a></li>
+                            <li><a href="/create-event" className="hover:text-foreground transition-colors">Create Event</a></li>
+                            <li><a href="/about" className="hover:text-foreground transition-colors">About</a></li>
                         </ul>
                     </div>
 
                     <div className="md:col-span-3">
                         <h4 className="font-semibold text-sm text-foreground mb-4 uppercase tracking-wider">Support</h4>
                         <ul className="space-y-3 text-muted-foreground text-sm">
-                            <li><a href="#" className="hover:text-foreground transition-colors">Help Center</a></li>
-                            <li><a href="mailto:support@eventflow.com" className="hover:text-foreground transition-colors">Contact Us</a></li>
+                            <li><a href="/help-center" className="hover:text-foreground transition-colors">Help Center</a></li>
+                            <li><a href="mailto:omsaidesai9@gmail.com" className="hover:text-foreground transition-colors">Contact Us</a></li>
                         </ul>
                     </div>
                 </div>
