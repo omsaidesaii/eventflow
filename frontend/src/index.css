@@ -218,3 +218,20 @@
     letter-spacing: var(--tracking-normal);
   }
 }
+/* Custom scrollbar */
+::-webkit-scrollbar {
+  width: 10px;           /* scrollbar width */
+}
+
+::-webkit-scrollbar-track {
+  background: #000;     /* black background */
+}
+
+::-webkit-scrollbar-thumb {
+  background: #fff;     /* white thumb */
+  border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #e5e5e5;  /* slightly gray on hover */
+}
