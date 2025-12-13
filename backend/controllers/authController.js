@@ -79,10 +79,20 @@ export const register = async (req, res) => {
       subject: "🔐 Verify Your Account - Security Code Inside",
       html: getVerificationEmailTemplate(otp),
     };
-    transporter.sendMail(mailOptions).catch((err) => {
-      console.error("Verification Email Failed: ", err);
-      console.error("Email Config - From:", process.env.SENDER_EMAIL, "To:", email);
-    });
+    
+    // Send email asynchronously with promise-based approach
+    new Promise((resolve, reject) => {
+      transporter.sendMail(mailOptions, (err, info) => {
+        if (err) {
+          console.error("Verification Email Failed: ", err);
+          console.error("Email Config - From:", process.env.SENDER_EMAIL, "To:", email);
+          reject(err);
+        } else {
+          console.log("Verification Email Sent:", info.response);
+          resolve(info);
+        }
+      });
+    }).catch(err => console.error("Email promise error:", err));
 
     return res.status(201).json({
       success: true,
@@ -191,10 +201,19 @@ export const sendVerifyOtp = async (req, res) => {
       subject: "🔐 Verify Your Account - Security Code Inside",
       html: getVerificationEmailTemplate(otp),
     };
-    transporter.sendMail(mailOptions).catch((err) => {
-      console.error("Resend Verification Email Failed: ", err);
-      console.error("Email Config - From:", process.env.SENDER_EMAIL, "To:", user.email);
-    });
+    
+    new Promise((resolve, reject) => {
+      transporter.sendMail(mailOptions, (err, info) => {
+        if (err) {
+          console.error("Resend Verification Email Failed: ", err);
+          console.error("Email Config - From:", process.env.SENDER_EMAIL, "To:", user.email);
+          reject(err);
+        } else {
+          console.log("Resend Verification Email Sent:", info.response);
+          resolve(info);
+        }
+      });
+    }).catch(err => console.error("Email promise error:", err));
 
     return res
       .status(200)
@@ -255,10 +274,19 @@ export const verifyEmail = async (req, res) => {
         subject: "🎉 Welcome to EventFlow!",
         html: getWelcomeEmailTemplate(user.name, email),
       };
-      transporter.sendMail(mailOptions).catch(err => {
-        console.error("Welcome Email Failed: ", err);
-        console.error("Email Config - From:", process.env.SENDER_EMAIL, "To:", email);
-      });
+      
+      new Promise((resolve, reject) => {
+        transporter.sendMail(mailOptions, (err, info) => {
+          if (err) {
+            console.error("Welcome Email Failed: ", err);
+            console.error("Email Config - From:", process.env.SENDER_EMAIL, "To:", email);
+            reject(err);
+          } else {
+            console.log("Welcome Email Sent:", info.response);
+            resolve(info);
+          }
+        });
+      }).catch(err => console.error("Email promise error:", err));
 
     return res
       .status(200)
@@ -313,10 +341,19 @@ export const sendResetOtp = async (req, res) => {
       subject: "🔒 Password Reset OTP",
       html: getPasswordResetEmailTemplate(otp),
     };
-    transporter.sendMail(mailOptions).catch((err) => {
-      console.error("Password Reset Email Failed: ", err);
-      console.error("Email Config - From:", process.env.SENDER_EMAIL, "To:", user.email);
-    });
+    
+    new Promise((resolve, reject) => {
+      transporter.sendMail(mailOptions, (err, info) => {
+        if (err) {
+          console.error("Password Reset Email Failed: ", err);
+          console.error("Email Config - From:", process.env.SENDER_EMAIL, "To:", user.email);
+          reject(err);
+        } else {
+          console.log("Password Reset Email Sent:", info.response);
+          resolve(info);
+        }
+      });
+    }).catch(err => console.error("Email promise error:", err));
 
     return res
       .status(200)

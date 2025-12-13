@@ -42,12 +42,25 @@ export const sendTicketEmail = async ({ email, name, eventName, eventDate, venue
       html: htmlContent,
     };
 
-    const info = await transporter.sendMail(mailOptions);
-    console.log(`Ticket email sent to ${email}: ${info.messageId}`);
-    return info;
+    // Use promise-based approach for better error handling
+    return new Promise((resolve, reject) => {
+      transporter.sendMail(mailOptions, (err, info) => {
+        if (err) {
+          console.error(`Ticket email failed for ${email}:`, err);
+          console.error('Email Config - From:', process.env.SENDER_EMAIL, 'To:', email);
+          reject(err);
+        } else {
+          console.log(`Ticket email sent to ${email}:`, info.response);
+          resolve(info);
+        }
+      });
+    }).catch(err => {
+      console.error(`Error sending ticket email to ${email}:`, err);
+      return null; // don't throw, continue processing other attendees
+    });
   } catch (err) {
-    console.error(`Error sending ticket email to ${email}:`, err);
-    return null; // don’t throw, continue processing other attendees
+    console.error(`Error preparing ticket email for ${email}:`, err);
+    return null;
   }
 };
 
