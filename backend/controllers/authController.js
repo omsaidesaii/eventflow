@@ -206,7 +206,7 @@ export const sendVerifyOtp = async (req, res) => {
       transporter.sendMail(mailOptions, (err, info) => {
         if (err) {
           console.error("Resend Verification Email Failed: ", err);
-          console.error("Email Config - From:", process.env.SENDER_EMAIL, "To:", user.email);
+          console.error("Email Config - From :", process.env.SENDER_EMAIL, "To:", user.email);
           reject(err);
         } else {
           console.log("Resend Verification Email Sent:", info.response);
